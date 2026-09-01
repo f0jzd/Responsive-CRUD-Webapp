@@ -2,8 +2,36 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/auth.guard';
 
 export const routes: Routes = [
-  { path: 'login', loadComponent: () => import('./features/auth/login.component').then(m => m.LoginComponent) },
-  { path: 'mina-citat', canActivate: [authGuard], loadComponent: () => import('./features/my-quotes/my-quotes.component').then(m => m.MyQuotesComponent) },
-  { path: '', pathMatch: 'full', redirectTo: 'mina-citat' },
-  { path: '**', redirectTo: 'mina-citat' }
+  {
+    path: 'books',
+    loadComponent: () => import('./features/books/book-list.component').then(m => m.BookListComponent)
+  },
+  {
+    path: 'books/new',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/books/book-form.component').then(m => m.BookFormComponent)
+  },
+  {
+    path: 'books/:id/edit',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/books/book-form.component').then(m => m.BookFormComponent)
+  },
+  {
+    path: 'mina-citat',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/my-quotes/my-quotes.component').then(m => m.MyQuotesComponent)
+  },
+  {
+    path: 'login',
+    loadComponent: () => import('./features/auth/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'books'
+  },
+  {
+    path: '**',
+    redirectTo: 'books'
+  }
 ];

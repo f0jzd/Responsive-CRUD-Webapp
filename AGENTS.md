@@ -22,3 +22,17 @@ Backend:
 - `dotnet --list-sdks`
 - `dotnet list package --outdated`
 - `dotnet build`
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues (`gh` CLI). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Canonical triage roles mapping. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout (`CONTEXT.md` + `docs/adr/`). See `docs/agents/domain.md`.
