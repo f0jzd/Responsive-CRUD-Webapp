@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -9,20 +9,20 @@ import { ToastService } from '../../core/toast.service';
 @Component({
   selector: 'app-my-quotes',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [DatePipe, ReactiveFormsModule],
   template: `
     <div class="container py-2">
       <!-- Header -->
-      <div class="row align-items-center mb-4 g-3 bg-white p-4 rounded-3 shadow-sm border">
+      <div class="row align-items-center mb-4 g-3 card card-body flex-row shadow-sm border rounded-3 p-4 mx-0" style="background-color: #161b22; border-color: #30363d !important;">
         <div class="col-md-8">
-          <h1 class="h2 fw-bold text-dark mb-1">
+          <h1 class="h2 fw-bold text-white mb-1">
             <i class="fa-solid fa-quote-left text-warning me-2"></i>Mina citat
           </h1>
-          <p class="text-muted mb-0">
+          <p class="text-secondary mb-0">
             Samla, inspireras av och hantera dina personliga favoritcitat.
           </p>
         </div>
-        <div class="col-md-4 text-md-end">
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
           <span class="badge bg-primary fs-6 px-3 py-2">
             <i class="fa-solid fa-bookmark me-1"></i> {{ quotes().length }} sparade citat
           </span>
@@ -32,9 +32,9 @@ import { ToastService } from '../../core/toast.service';
       <div class="row g-4">
         <!-- Quote Form (Add / Edit) -->
         <div class="col-lg-5">
-          <div class="card shadow-sm border-0 sticky-top" style="top: 80px; z-index: 10;">
-            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
-              <h2 class="h5 fw-bold mb-0 text-dark">
+          <div class="card shadow-sm border rounded-3 sticky-top" style="top: 80px; z-index: 10; background-color: #161b22; border-color: #30363d !important;">
+            <div class="card-header py-3 border-bottom d-flex justify-content-between align-items-center" style="background-color: #21262d; border-color: #30363d !important;">
+              <h2 class="h5 fw-bold mb-0 text-white">
                 <i
                   class="me-2 text-primary fa-solid"
                   [class.fa-plus-circle]="!editingId()"
@@ -53,7 +53,7 @@ import { ToastService } from '../../core/toast.service';
               <form [formGroup]="form" (ngSubmit)="saveQuote()">
                 <!-- Quote text -->
                 <div class="mb-3">
-                  <label for="quoteText" class="form-label fw-semibold">
+                  <label for="quoteText" class="form-label fw-semibold text-light">
                     Citattext <span class="text-danger">*</span>
                   </label>
                   <textarea
@@ -64,7 +64,7 @@ import { ToastService } from '../../core/toast.service';
                     rows="4"
                     placeholder="Skriv eller klistra in citatet här..."
                   ></textarea>
-                  <div class="d-flex justify-content-between form-text small">
+                  <div class="d-flex justify-content-between form-text text-secondary small">
                     <span>Inspirerande ord, visdom eller tankar.</span>
                     <span>{{ form.get('text')?.value?.length || 0 }} / 1000</span>
                   </div>
@@ -81,11 +81,11 @@ import { ToastService } from '../../core/toast.service';
 
                 <!-- Author -->
                 <div class="mb-4">
-                  <label for="quoteAuthor" class="form-label fw-semibold">
-                    Författare / Källa <span class="text-muted fw-normal">(valfri)</span>
+                  <label for="quoteAuthor" class="form-label fw-semibold text-light">
+                    Författare / Källa <span class="text-secondary fw-normal">(valfri)</span>
                   </label>
                   <div class="input-group">
-                    <span class="input-group-text bg-light"><i class="fa-solid fa-feather"></i></span>
+                    <span class="input-group-text"><i class="fa-solid fa-feather"></i></span>
                     <input
                       id="quoteAuthor"
                       type="text"
@@ -130,15 +130,15 @@ import { ToastService } from '../../core/toast.service';
               <div class="spinner-border text-primary" role="status">
                 <span class="visually-hidden">Laddar citat...</span>
               </div>
-              <p class="text-muted small mt-2">Hämtar dina favoritcitat...</p>
+              <p class="text-secondary small mt-2">Hämtar dina favoritcitat...</p>
             </div>
           } @else if (quotes().length === 0) {
-            <div class="card card-body text-center py-5 shadow-sm border-0 bg-white">
+            <div class="card card-body text-center py-5 shadow-sm border" style="background-color: #161b22; border-color: #30363d !important;">
               <div class="text-muted mb-3">
                 <i class="fa-solid fa-quote-left fs-1 text-secondary opacity-50"></i>
               </div>
-              <h3 class="h5 text-secondary">Inga citat än</h3>
-              <p class="text-muted small">
+              <h3 class="h5 text-light">Inga citat än</h3>
+              <p class="text-secondary small">
                 Du har inte sparat några citat än. Skriv ditt första favoritcitat i formuläret till vänster!
               </p>
             </div>
@@ -146,33 +146,33 @@ import { ToastService } from '../../core/toast.service';
             <div class="d-flex flex-column gap-3">
               @for (quote of quotes(); track quote.id) {
                 <div
-                  class="card border-0 shadow-sm rounded-3 quote-card position-relative"
+                  class="card shadow-sm rounded-3 quote-card position-relative border"
                   [class.border-start]="true"
                   [class.border-4]="true"
                   [class.border-warning]="editingId() !== quote.id"
                   [class.border-primary]="editingId() === quote.id"
-                  [class.bg-light]="editingId() === quote.id"
+                  style="background-color: #161b22; border-color: #30363d;"
                 >
                   <div class="card-body p-4">
                     <div class="d-flex align-items-start">
-                      <i class="fa-solid fa-quote-left fs-4 text-warning opacity-50 me-3 mt-1 flex-shrink-0"></i>
+                      <i class="fa-solid fa-quote-left fs-4 text-warning opacity-75 me-3 mt-1 flex-shrink-0"></i>
                       <div class="flex-grow-1">
-                        <blockquote class="blockquote mb-2 fs-6 fw-normal text-dark">
+                        <blockquote class="blockquote mb-2 fs-6 fw-normal text-light">
                           "{{ quote.text }}"
                         </blockquote>
-                        <figcaption class="blockquote-footer mb-3 text-primary fw-semibold">
+                        <figcaption class="blockquote-footer mb-3 text-info fw-semibold">
                           {{ quote.author || 'Okänd författare' }}
                         </figcaption>
 
-                        <div class="d-flex align-items-center justify-content-between pt-2 border-top">
-                          <span class="text-muted small">
+                        <div class="d-flex align-items-center justify-content-between pt-2 border-top" style="border-color: #30363d !important;">
+                          <span class="text-secondary small">
                             <i class="fa-regular fa-clock me-1"></i>
                             {{ quote.createdAtUtc | date:'yyyy-MM-dd' }}
                           </span>
                           <div class="btn-group btn-group-sm">
                             <button
                               type="button"
-                              class="btn btn-outline-secondary"
+                              class="btn btn-outline-info"
                               (click)="editQuote(quote)"
                               title="Redigera citat"
                             >

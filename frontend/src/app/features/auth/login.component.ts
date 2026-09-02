@@ -1,5 +1,4 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
@@ -7,15 +6,15 @@ import { AuthService } from '../../core/auth.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   template: `
     <div class="container py-4">
       <div class="row justify-content-center">
         <div class="col-12 col-sm-10 col-md-8 col-lg-5">
           <!-- Auth Card -->
-          <div class="card shadow border-0 rounded-4 overflow-hidden">
+          <div class="card shadow border rounded-4 overflow-hidden" style="background-color: #161b22; border-color: #30363d !important;">
             <!-- Header Tabs -->
-            <div class="card-header bg-dark text-white p-0 border-0">
+            <div class="card-header p-0 border-0" style="background-color: #21262d;">
               <div class="d-flex">
                 <button
                   type="button"
@@ -38,15 +37,15 @@ import { AuthService } from '../../core/auth.service';
               </div>
             </div>
 
-            <div class="card-body p-4 p-md-5 bg-white">
+            <div class="card-body p-4 p-md-5" style="background-color: #161b22;">
               <div class="text-center mb-4">
                 <div class="display-6 text-primary mb-2">
                   <i [class.fa-lock]="!isRegisterMode()" [class.fa-user-shield]="isRegisterMode()" class="fa-solid"></i>
                 </div>
-                <h1 class="h4 fw-bold text-dark mb-1">
+                <h1 class="h4 fw-bold text-white mb-1">
                   {{ isRegisterMode() ? 'Skapa nytt användarkonto' : 'Välkommen tillbaka' }}
                 </h1>
-                <p class="text-muted small">
+                <p class="text-secondary small">
                   {{ isRegisterMode() ? 'Registrera dig för att lägga till böcker och hantera dina favoritcitat.' : 'Logga in för att hantera dina böcker och citat.' }}
                 </p>
               </div>
@@ -63,9 +62,9 @@ import { AuthService } from '../../core/auth.service';
               <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
                 <!-- Email -->
                 <div class="mb-3">
-                  <label for="email" class="form-label fw-semibold">E-postadress</label>
+                  <label for="email" class="form-label fw-semibold text-light">E-postadress</label>
                   <div class="input-group">
-                    <span class="input-group-text bg-light"><i class="fa-solid fa-envelope"></i></span>
+                    <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
                     <input
                       id="email"
                       type="email"
@@ -89,9 +88,9 @@ import { AuthService } from '../../core/auth.service';
 
                 <!-- Password -->
                 <div class="mb-4">
-                  <label for="password" class="form-label fw-semibold">Lösenord</label>
+                  <label for="password" class="form-label fw-semibold text-light">Lösenord</label>
                   <div class="input-group">
-                    <span class="input-group-text bg-light"><i class="fa-solid fa-key"></i></span>
+                    <span class="input-group-text"><i class="fa-solid fa-key"></i></span>
                     <input
                       id="password"
                       [type]="showPassword() ? 'text' : 'password'"
@@ -140,8 +139,8 @@ import { AuthService } from '../../core/auth.service';
               </form>
 
               <!-- Quick Demo Login Helper -->
-              <div class="mt-4 pt-3 border-top text-center">
-                <p class="text-muted small mb-2">Testa direkt med förkonfigurerat demo-konto:</p>
+              <div class="mt-4 pt-3 border-top text-center" style="border-color: #30363d !important;">
+                <p class="text-secondary small mb-2">Testa direkt med förkonfigurerat demo-konto:</p>
                 <button
                   type="button"
                   class="btn btn-outline-secondary btn-sm"

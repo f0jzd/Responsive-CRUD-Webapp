@@ -26,11 +26,6 @@ export interface Quote {
   createdAtUtc: string;
 }
 
-export interface QuoteInput {
-  text: string;
-  author?: string;
-}
-
 export interface User {
   id: number;
   email: string;

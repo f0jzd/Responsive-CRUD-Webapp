@@ -1,5 +1,4 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BookService } from './book.service';
@@ -9,7 +8,7 @@ import { AuthService } from '../../core/auth.service';
 @Component({
   selector: 'app-book-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
   template: `
     <div class="container py-3">
       <div class="row justify-content-center">
@@ -22,9 +21,9 @@ import { AuthService } from '../../core/auth.service';
           </div>
 
           <!-- Main Card -->
-          <div class="card shadow-sm border-0 rounded-3">
-            <div class="card-header bg-white py-3 border-bottom">
-              <h1 class="h4 fw-bold mb-0 d-flex align-items-center text-dark">
+          <div class="card shadow-sm border rounded-3" style="background-color: #161b22; border-color: #30363d !important;">
+            <div class="card-header py-3 border-bottom" style="background-color: #21262d; border-color: #30363d !important;">
+              <h1 class="h4 fw-bold mb-0 d-flex align-items-center text-white">
                 <i
                   class="me-2 text-primary"
                   [class.fa-circle-plus]="!isEditMode()"
@@ -33,7 +32,7 @@ import { AuthService } from '../../core/auth.service';
                 ></i>
                 {{ isEditMode() ? 'Redigera bokdetaljer' : 'Lägg till ny bok i katalogen' }}
               </h1>
-              <p class="text-muted small mb-0 mt-1">
+              <p class="text-secondary small mb-0 mt-1">
                 {{ isEditMode() ? 'Uppdatera informationen om boken nedan.' : 'Fyll i bokens information för att dela den med andra användare.' }}
               </p>
             </div>
@@ -44,17 +43,17 @@ import { AuthService } from '../../core/auth.service';
                   <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Laddar bok...</span>
                   </div>
-                  <p class="text-muted small mt-2">Hämtar bokinformation...</p>
+                  <p class="text-secondary small mt-2">Hämtar bokinformation...</p>
                 </div>
               } @else {
                 <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
                   <!-- Titel -->
                   <div class="mb-3">
-                    <label for="title" class="form-label fw-semibold">
+                    <label for="title" class="form-label fw-semibold text-light">
                       Boktitel <span class="text-danger">*</span>
                     </label>
                     <div class="input-group">
-                      <span class="input-group-text bg-light"><i class="fa-solid fa-book"></i></span>
+                      <span class="input-group-text"><i class="fa-solid fa-book"></i></span>
                       <input
                         id="title"
                         type="text"
@@ -77,11 +76,11 @@ import { AuthService } from '../../core/auth.service';
 
                   <!-- Författare -->
                   <div class="mb-3">
-                    <label for="author" class="form-label fw-semibold">
+                    <label for="author" class="form-label fw-semibold text-light">
                       Författare <span class="text-danger">*</span>
                     </label>
                     <div class="input-group">
-                      <span class="input-group-text bg-light"><i class="fa-solid fa-feather-pointed"></i></span>
+                      <span class="input-group-text"><i class="fa-solid fa-feather-pointed"></i></span>
                       <input
                         id="author"
                         type="text"
@@ -104,11 +103,11 @@ import { AuthService } from '../../core/auth.service';
 
                   <!-- Publiceringsdatum -->
                   <div class="mb-3">
-                    <label for="publicationDate" class="form-label fw-semibold">
+                    <label for="publicationDate" class="form-label fw-semibold text-light">
                       Publiceringsdatum <span class="text-danger">*</span>
                     </label>
                     <div class="input-group">
-                      <span class="input-group-text bg-light"><i class="fa-solid fa-calendar-days"></i></span>
+                      <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
                       <input
                         id="publicationDate"
                         type="date"
@@ -126,11 +125,11 @@ import { AuthService } from '../../core/auth.service';
 
                   <!-- Omslagsbilds-URL -->
                   <div class="mb-3">
-                    <label for="coverImageUrl" class="form-label fw-semibold">
-                      Omslagsbild (URL) <span class="text-muted fw-normal">(valfri)</span>
+                    <label for="coverImageUrl" class="form-label fw-semibold text-light">
+                      Omslagsbild (URL) <span class="text-secondary fw-normal">(valfri)</span>
                     </label>
                     <div class="input-group">
-                      <span class="input-group-text bg-light"><i class="fa-solid fa-image"></i></span>
+                      <span class="input-group-text"><i class="fa-solid fa-image"></i></span>
                       <input
                         id="coverImageUrl"
                         type="url"
@@ -140,11 +139,11 @@ import { AuthService } from '../../core/auth.service';
                         placeholder="https://images.unsplash.com/..."
                       />
                     </div>
-                    <div class="form-text small">Ange en länk till en bild för bokomslaget.</div>
+                    <div class="form-text text-secondary small">Ange en länk till en bild för bokomslaget.</div>
 
                     <!-- Live Image Preview -->
                     @if (form.get('coverImageUrl')?.value) {
-                      <div class="mt-2 p-2 bg-light rounded border d-flex align-items-center gap-3">
+                      <div class="mt-2 p-2 rounded border d-flex align-items-center gap-3" style="background-color: #0d1117; border-color: #30363d !important;">
                         <img
                           [src]="form.get('coverImageUrl')?.value"
                           alt="Förhandsgranskning"
@@ -154,7 +153,7 @@ import { AuthService } from '../../core/auth.service';
                           (load)="previewError.set(false)"
                         />
                         <div>
-                          <span class="small fw-semibold d-block">Förhandsgranskning av omslag</span>
+                          <span class="small fw-semibold d-block text-light">Förhandsgranskning av omslag</span>
                           @if (previewError()) {
                             <span class="badge bg-warning text-dark small">Kunde inte ladda bilden från länken</span>
                           } @else {
@@ -167,8 +166,8 @@ import { AuthService } from '../../core/auth.service';
 
                   <!-- Beskrivning -->
                   <div class="mb-4">
-                    <label for="description" class="form-label fw-semibold">
-                      Beskrivning / Sammanfattning <span class="text-muted fw-normal">(valfri)</span>
+                    <label for="description" class="form-label fw-semibold text-light">
+                      Beskrivning / Sammanfattning <span class="text-secondary fw-normal">(valfri)</span>
                     </label>
                     <textarea
                       id="description"
@@ -178,7 +177,7 @@ import { AuthService } from '../../core/auth.service';
                       formControlName="description"
                       placeholder="Skriv en kort sammanfattning eller recension av boken..."
                     ></textarea>
-                    <div class="d-flex justify-content-between form-text small">
+                    <div class="d-flex justify-content-between form-text text-secondary small">
                       <span>Kort text om bokens handling eller varför du rekommenderar den.</span>
                       <span>{{ form.get('description')?.value?.length || 0 }} / 2000</span>
                     </div>

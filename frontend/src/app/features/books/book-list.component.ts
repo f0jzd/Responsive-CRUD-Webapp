@@ -1,5 +1,4 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { BookService } from './book.service';
@@ -10,21 +9,21 @@ import { Book } from '../../core/models';
 @Component({
   selector: 'app-book-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink],
   template: `
     <div class="container py-2">
       <!-- Hero / Header Section -->
-      <div class="row align-items-center mb-4 g-3 bg-white p-4 rounded-3 shadow-sm border">
+      <div class="row align-items-center mb-4 g-3 card card-body flex-row shadow-sm border rounded-3 p-4 mx-0" style="background-color: #161b22; border-color: #30363d !important;">
         <div class="col-md-7">
-          <h1 class="h2 fw-bold text-dark mb-1">
+          <h1 class="h2 fw-bold text-white mb-1">
             <i class="fa-solid fa-book-bookmark text-primary me-2"></i>Bokkatalog
           </h1>
-          <p class="text-muted mb-0">
+          <p class="text-secondary mb-0">
             Upptäck, dela och hantera böcker i den gemensamma katalogen.
           </p>
         </div>
-        <div class="col-md-5 text-md-end">
-          <button class="btn btn-primary btn-lg shadow-sm" (click)="navigateToAddBook()">
+        <div class="col-md-5 text-md-end mt-3 mt-md-0">
+          <button class="btn btn-primary btn-lg shadow-sm fw-semibold" (click)="navigateToAddBook()">
             <i class="fa-solid fa-circle-plus me-2"></i>Lägg till ny bok
           </button>
         </div>
@@ -34,15 +33,16 @@ import { Book } from '../../core/models';
       <div class="row mb-4">
         <div class="col-12 col-md-6 col-lg-5">
           <div class="input-group shadow-sm">
-            <span class="input-group-text bg-white text-muted border-end-0">
-              <i class="fa-solid fa-magnifying-glass"></i>
+            <span class="input-group-text border-end-0" style="background-color: #21262d; border-color: #30363d;">
+              <i class="fa-solid fa-magnifying-glass text-secondary"></i>
             </span>
             <input
               type="text"
-              class="form-control border-start-0 ps-0"
+              class="form-control border-start-0 ps-0 text-white"
               placeholder="Sök på titel eller författare..."
               [ngModel]="searchTerm()"
               (ngModelChange)="searchTerm.set($event)"
+              style="background-color: #0d1117; border-color: #30363d;"
             />
             @if (searchTerm()) {
               <button class="btn btn-outline-secondary" type="button" (click)="searchTerm.set('')">
@@ -52,8 +52,8 @@ import { Book } from '../../core/models';
           </div>
         </div>
         <div class="col-12 col-md-6 col-lg-7 d-flex align-items-center justify-content-md-end mt-2 mt-md-0">
-          <span class="text-muted small">
-            Visar <strong>{{ filteredBooks().length }}</strong> av <strong>{{ books().length }}</strong> böcker
+          <span class="text-secondary small">
+            Visar <strong class="text-light">{{ filteredBooks().length }}</strong> av <strong class="text-light">{{ books().length }}</strong> böcker
           </span>
         </div>
       </div>
@@ -64,25 +64,25 @@ import { Book } from '../../core/models';
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Laddar böcker...</span>
           </div>
-          <p class="text-muted mt-2">Hämtar böcker från databasen...</p>
+          <p class="text-secondary mt-2">Hämtar böcker från databasen...</p>
         </div>
       } @else if (filteredBooks().length === 0) {
         <!-- Empty State -->
-        <div class="card card-body text-center py-5 shadow-sm border-0 bg-white">
+        <div class="card card-body text-center py-5 shadow-sm border" style="background-color: #161b22; border-color: #30363d !important;">
           <div class="text-muted mb-3">
             <i class="fa-solid fa-book-open fs-1 text-secondary opacity-50"></i>
           </div>
           @if (searchTerm()) {
-            <h4 class="h5 text-secondary">Inga böcker matchade din sökning "{{ searchTerm() }}"</h4>
-            <p class="text-muted small">Prova att söka på något annat eller rensa sökfältet.</p>
+            <h4 class="h5 text-light">Inga böcker matchade din sökning "{{ searchTerm() }}"</h4>
+            <p class="text-secondary small">Prova att söka på något annat eller rensa sökfältet.</p>
             <div>
               <button class="btn btn-outline-primary btn-sm" (click)="searchTerm.set('')">
                 Rensa sökning
               </button>
             </div>
           } @else {
-            <h4 class="h5 text-secondary">Bokkatalogen är tom just nu</h4>
-            <p class="text-muted small">Var först med att lägga till en bok i katalogen!</p>
+            <h4 class="h5 text-light">Bokkatalogen är tom just nu</h4>
+            <p class="text-secondary small">Var först med att lägga till en bok i katalogen!</p>
             <div>
               <button class="btn btn-primary" (click)="navigateToAddBook()">
                 <i class="fa-solid fa-plus me-1"></i>Lägg till första boken
@@ -95,9 +95,9 @@ import { Book } from '../../core/models';
         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
           @for (book of filteredBooks(); track book.id) {
             <div class="col">
-              <div class="card h-100 shadow-sm border-0 book-card transition-all">
+              <div class="card h-100 shadow-sm border book-card transition-all" style="background-color: #161b22; border-color: #30363d !important;">
                 <!-- Book Image / Header -->
-                <div class="book-cover-wrapper bg-light text-center position-relative overflow-hidden" style="height: 200px;">
+                <div class="book-cover-wrapper text-center position-relative overflow-hidden" style="height: 200px; background-color: #0d1117;">
                   @if (book.coverImageUrl) {
                     <img
                       [src]="book.coverImageUrl"
@@ -106,7 +106,7 @@ import { Book } from '../../core/models';
                       (error)="onImageError($event)"
                     />
                   } @else {
-                    <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center text-secondary bg-light">
+                    <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center text-secondary" style="background-color: #0d1117;">
                       <i class="fa-solid fa-book-bookmark fs-1 opacity-25"></i>
                       <span class="small opacity-75 mt-2">Inget omslag</span>
                     </div>
@@ -115,32 +115,32 @@ import { Book } from '../../core/models';
 
                 <!-- Book Body -->
                 <div class="card-body d-flex flex-column p-3">
-                  <h2 class="card-title h5 fw-bold text-dark mb-1 text-truncate" [title]="book.title">
+                  <h2 class="card-title h5 fw-bold text-white mb-1 text-truncate" [title]="book.title">
                     {{ book.title }}
                   </h2>
-                  <p class="card-subtitle text-primary small fw-semibold mb-2 text-truncate">
+                  <p class="card-subtitle text-info small fw-semibold mb-2 text-truncate">
                     <i class="fa-solid fa-feather-pointed me-1"></i>{{ book.author }}
                   </p>
 
-                  <div class="text-muted small mb-2">
+                  <div class="text-secondary small mb-2">
                     <i class="fa-regular fa-calendar me-1"></i>
                     <span>Publicerad: {{ book.publicationDate }}</span>
                   </div>
 
                   @if (book.description) {
-                    <p class="card-text text-secondary small flex-grow-1 line-clamp-3 mb-3">
+                    <p class="card-text text-light opacity-75 small flex-grow-1 line-clamp-3 mb-3">
                       {{ book.description }}
                     </p>
                   } @else {
-                    <p class="card-text text-muted small fst-italic flex-grow-1 mb-3">
+                    <p class="card-text text-secondary small fst-italic flex-grow-1 mb-3">
                       Ingen beskrivning tillgänglig.
                     </p>
                   }
 
                   <!-- Footer / Actions -->
-                  <div class="pt-2 border-top d-flex align-items-center justify-content-between mt-auto">
-                    <span class="badge bg-light text-secondary border small" [title]="'Skapad av ' + (book.creatorEmail || 'Okänd')">
-                      <i class="fa-regular fa-user me-1"></i>
+                  <div class="pt-2 border-top d-flex align-items-center justify-content-between mt-auto" style="border-color: #30363d !important;">
+                    <span class="badge bg-dark border border-secondary text-secondary small" [title]="'Skapad av ' + (book.creatorEmail || 'Okänd')">
+                      <i class="fa-regular fa-user me-1 text-info"></i>
                       {{ book.creatorEmail ? book.creatorEmail.split('@')[0] : 'Användare' }}
                     </span>
 
@@ -148,7 +148,7 @@ import { Book } from '../../core/models';
                       <div class="btn-group btn-group-sm">
                         <a
                           [routerLink]="['/books', book.id, 'edit']"
-                          class="btn btn-outline-primary"
+                          class="btn btn-outline-info"
                           title="Redigera bok"
                         >
                           <i class="fa-solid fa-pen-to-square me-1"></i>Redigera
