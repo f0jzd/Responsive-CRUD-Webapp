@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 var jwt = builder.Configuration.GetSection("Jwt");
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!));
 
-var dbPath = Path.Combine(builder.Environment.ContentRootPath, "app.db");
+var dbPath = Path.Combine(builder.Environment.ContentRootPath, "books.db");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy

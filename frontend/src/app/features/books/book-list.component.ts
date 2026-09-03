@@ -5,11 +5,12 @@ import { BookService } from './book.service';
 import { AuthService } from '../../core/auth.service';
 import { ToastService } from '../../core/toast.service';
 import { Book } from '../../core/models';
+import { BookQuickViewComponent } from './book-quick-view.component';
 
 @Component({
   selector: 'app-book-list',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, BookQuickViewComponent],
   template: `
     <div class="container py-2">
       <!-- Hero / Header Section -->
@@ -95,7 +96,12 @@ import { Book } from '../../core/models';
         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
           @for (book of filteredBooks(); track book.id) {
             <div class="col">
-              <div class="card h-100 shadow-sm border book-card transition-all" style="background-color: #161b22; border-color: #30363d !important;">
+              <div class="card h-100 shadow-sm border book-card transition-all" 
+                   style="background-color: #161b22; border-color: #30363d !important; cursor: pointer;"
+                   role="button"
+                   tabindex="0"
+                   (click)="selectedBook.set(book)"
+                   (keydown.enter)="selectedBook.set(book)">
                 <!-- Book Image / Header -->
                 <div class="book-cover-wrapper text-center position-relative overflow-hidden" style="height: 200px; background-color: #0d1117;">
                   @if (book.coverImageUrl) {
@@ -150,13 +156,14 @@ import { Book } from '../../core/models';
                           [routerLink]="['/books', book.id, 'edit']"
                           class="btn btn-outline-info"
                           title="Redigera bok"
+                          (click)="$event.stopPropagation()"
                         >
                           <i class="fa-solid fa-pen-to-square me-1"></i>Redigera
                         </a>
                         <button
                           type="button"
                           class="btn btn-outline-danger"
-                          (click)="deleteBook(book)"
+                          (click)="$event.stopPropagation(); deleteBook(book)"
                           title="Radera bok"
                         >
                           <i class="fa-solid fa-trash-can me-1"></i>Radera
@@ -169,6 +176,11 @@ import { Book } from '../../core/models';
             </div>
           }
         </div>
+      }
+      
+      <!-- Quick View Modal -->
+      @if (selectedBook()) {
+        <app-book-quick-view [book]="selectedBook()!" (close)="selectedBook.set(null)"></app-book-quick-view>
       }
     </div>
   `,
@@ -199,6 +211,7 @@ export class BookListComponent implements OnInit {
   books = signal<Book[]>([]);
   searchTerm = signal('');
   isLoading = signal(true);
+  selectedBook = signal<Book | null>(null);
 
   filteredBooks = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
