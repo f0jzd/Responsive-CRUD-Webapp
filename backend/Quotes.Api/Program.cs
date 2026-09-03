@@ -395,3 +395,5 @@ quotes.MapDelete("/{id:int}", async (int id, ClaimsPrincipal user, AppDbContext 
 
 app.Run();
 
+// Make the implicit Program class accessible for WebApplicationFactory in integration tests
+public partial class Program { }
