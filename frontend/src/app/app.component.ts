@@ -33,4 +33,4 @@ import { ToastComponent } from './core/toast.component';
     </div>
   `
 })
-export class AppComponent {}
+export class  AppComponent {}
