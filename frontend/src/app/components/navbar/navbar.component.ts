@@ -51,6 +51,13 @@ import { AuthService } from '../../core/auth.service';
 
           <div class="d-flex align-items-lg-center flex-column flex-lg-row gap-2 mt-2 mt-lg-0">
             @if (auth.isAuthenticated()) {
+              <a
+                class="btn btn-outline-primary btn-sm me-lg-2 text-nowrap"
+                routerLink="/books/new"
+                (click)="closeMenu()"
+              >
+                <i class="fa-solid fa-circle-plus me-1"></i> Ny bok
+              </a>
               <div class="text-light d-flex align-items-center me-lg-2">
                 <i class="fa-solid fa-circle-user fs-5 text-info me-2"></i>
                 <span class="small text-white-50">{{ auth.currentUser()?.email }}</span>

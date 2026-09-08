@@ -14,7 +14,7 @@ public sealed class Book
 {
     public int Id { get; set; }
     [MaxLength(200)] public required string Title { get; set; }
-    [MaxLength(150)] public required string Author { get; set; }
+    [MaxLength(100)] public required string Author { get; set; }
     [MaxLength(50)] public required string PublicationDate { get; set; }
     [MaxLength(2000)] public string? Description { get; set; }
     [MaxLength(1000)] public string? CoverImageUrl { get; set; }
@@ -35,10 +35,19 @@ public record Credentials(string Email, string Password);
 
 public class BookInput
 {
+    [Required, MaxLength(200)]
     public string Title { get; set; } = string.Empty;
+
+    [Required, MaxLength(100)]
     public string Author { get; set; } = string.Empty;
-    public string PublicationDate { get; set; } = string.Empty;
+
+    [MaxLength(50)]
+    public string? PublicationDate { get; set; }
+
+    [MaxLength(2000)]
     public string? Description { get; set; }
+
+    [MaxLength(1000)]
     public string? CoverImageUrl { get; set; }
 }
 
