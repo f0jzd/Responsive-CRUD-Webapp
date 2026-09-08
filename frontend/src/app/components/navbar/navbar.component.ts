@@ -37,6 +37,18 @@ import { AuthService } from '../../core/auth.service';
                 <i class="fa-solid fa-book me-1"></i> Böcker
               </a>
             </li>
+            @if (auth.isAuthenticated()) {
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  routerLink="/my-books"
+                  routerLinkActive="active"
+                  (click)="closeMenu()"
+                >
+                  <i class="fa-solid fa-bookmark me-1"></i> Mina böcker
+                </a>
+              </li>
+            }
             <li class="nav-item">
               <a
                 class="nav-link"

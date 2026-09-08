@@ -17,6 +17,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/books/book-form.component').then(m => m.BookFormComponent)
   },
   {
+    path: 'my-books',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/books/my-books.component').then(m => m.MyBooksComponent)
+  },
+  {
     path: 'mina-citat',
     canActivate: [authGuard],
     loadComponent: () => import('./features/my-quotes/my-quotes.component').then(m => m.MyQuotesComponent)
