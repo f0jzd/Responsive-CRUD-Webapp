@@ -49,9 +49,12 @@ import { AuthService } from '../../core/auth.service';
                 <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
                   <!-- Titel -->
                   <div class="mb-3">
-                    <label for="title" class="form-label fw-semibold text-light">
-                      Boktitel <span class="text-danger">*</span>
-                    </label>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <label for="title" class="form-label fw-semibold text-light mb-1">
+                        Boktitel <span class="text-danger">*</span>
+                      </label>
+                      <span class="text-secondary small">{{ form.get('title')?.value?.length || 0 }} / 200</span>
+                    </div>
                     <div class="input-group">
                       <span class="input-group-text"><i class="fa-solid fa-book"></i></span>
                       <input
@@ -76,9 +79,12 @@ import { AuthService } from '../../core/auth.service';
 
                   <!-- Författare -->
                   <div class="mb-3">
-                    <label for="author" class="form-label fw-semibold text-light">
-                      Författare <span class="text-danger">*</span>
-                    </label>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <label for="author" class="form-label fw-semibold text-light mb-1">
+                        Författare <span class="text-danger">*</span>
+                      </label>
+                      <span class="text-secondary small">{{ form.get('author')?.value?.length || 0 }} / 100</span>
+                    </div>
                     <div class="input-group">
                       <span class="input-group-text"><i class="fa-solid fa-feather-pointed"></i></span>
                       <input
@@ -95,7 +101,7 @@ import { AuthService } from '../../core/auth.service';
                         @if (form.get('author')?.errors?.['required']) {
                           Författare är obligatoriskt.
                         } @else if (form.get('author')?.errors?.['maxlength']) {
-                          Författarnamnet får vara högst 150 tecken.
+                          Författarnamnet får vara högst 100 tecken.
                         }
                       </div>
                     }
@@ -125,9 +131,14 @@ import { AuthService } from '../../core/auth.service';
 
                   <!-- Omslagsbilds-URL -->
                   <div class="mb-3">
-                    <label for="coverImageUrl" class="form-label fw-semibold text-light">
-                      Omslagsbild (URL) <span class="text-secondary fw-normal">(valfri)</span>
-                    </label>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <label for="coverImageUrl" class="form-label fw-semibold text-light mb-1">
+                        Omslagsbild (URL) <span class="text-secondary fw-normal">(valfri)</span>
+                      </label>
+                      @if (form.get('coverImageUrl')?.value) {
+                        <span class="text-secondary small">{{ form.get('coverImageUrl')?.value?.length || 0 }} / 1000</span>
+                      }
+                    </div>
                     <div class="input-group">
                       <span class="input-group-text"><i class="fa-solid fa-image"></i></span>
                       <input
@@ -181,6 +192,11 @@ import { AuthService } from '../../core/auth.service';
                       <span>Kort text om bokens handling eller varför du rekommenderar den.</span>
                       <span>{{ form.get('description')?.value?.length || 0 }} / 2000</span>
                     </div>
+                    @if (isFieldInvalid('description')) {
+                      <div class="text-danger small mt-1">
+                        Beskrivningen får vara högst 2000 tecken.
+                      </div>
+                    }
                   </div>
 
                   <!-- Action Buttons -->
@@ -231,7 +247,7 @@ export class BookFormComponent implements OnInit {
     }),
     author: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.maxLength(150)]
+      validators: [Validators.required, Validators.maxLength(100)]
     }),
     publicationDate: new FormControl('', {
       nonNullable: true,

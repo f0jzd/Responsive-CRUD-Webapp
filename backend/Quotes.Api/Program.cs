@@ -264,17 +264,33 @@ books.MapGet("/{id:int}", async (int id, AppDbContext db) =>
 
 books.MapPost("/", async (BookInput input, ClaimsPrincipal user, AppDbContext db) =>
 {
-    if (string.IsNullOrWhiteSpace(input.Title) || string.IsNullOrWhiteSpace(input.Author) || string.IsNullOrWhiteSpace(input.PublicationDate))
+    if (string.IsNullOrWhiteSpace(input.Title) || input.Title.Trim().Length > 200)
     {
-        return Results.BadRequest(new { message = "Titel, författare och publiceringsdatum är obligatoriska." });
+        return Results.BadRequest(new { message = "Titel är obligatorisk och får vara högst 200 tecken." });
     }
+    if (string.IsNullOrWhiteSpace(input.Author) || input.Author.Trim().Length > 100)
+    {
+        return Results.BadRequest(new { message = "Författare är obligatorisk och får vara högst 100 tecken." });
+    }
+    if (!string.IsNullOrWhiteSpace(input.Description) && input.Description.Trim().Length > 2000)
+    {
+        return Results.BadRequest(new { message = "Beskrivning får vara högst 2000 tecken." });
+    }
+    if (!string.IsNullOrWhiteSpace(input.CoverImageUrl) && input.CoverImageUrl.Trim().Length > 1000)
+    {
+        return Results.BadRequest(new { message = "Omslagsbildens URL får vara högst 1000 tecken." });
+    }
+
+    var publicationDate = string.IsNullOrWhiteSpace(input.PublicationDate)
+        ? DateTime.UtcNow.ToString("yyyy-MM-dd")
+        : input.PublicationDate.Trim();
 
     var userId = UserId(user);
     var book = new Book
     {
         Title = input.Title.Trim(),
         Author = input.Author.Trim(),
-        PublicationDate = input.PublicationDate.Trim(),
+        PublicationDate = publicationDate,
         Description = string.IsNullOrWhiteSpace(input.Description) ? null : input.Description.Trim(),
         CoverImageUrl = string.IsNullOrWhiteSpace(input.CoverImageUrl) ? null : input.CoverImageUrl.Trim(),
         CreatorId = userId
@@ -301,9 +317,21 @@ books.MapPost("/", async (BookInput input, ClaimsPrincipal user, AppDbContext db
 
 books.MapPut("/{id:int}", async (int id, BookInput input, ClaimsPrincipal user, AppDbContext db) =>
 {
-    if (string.IsNullOrWhiteSpace(input.Title) || string.IsNullOrWhiteSpace(input.Author) || string.IsNullOrWhiteSpace(input.PublicationDate))
+    if (string.IsNullOrWhiteSpace(input.Title) || input.Title.Trim().Length > 200)
     {
-        return Results.BadRequest(new { message = "Titel, författare och publiceringsdatum är obligatoriska." });
+        return Results.BadRequest(new { message = "Titel är obligatorisk och får vara högst 200 tecken." });
+    }
+    if (string.IsNullOrWhiteSpace(input.Author) || input.Author.Trim().Length > 100)
+    {
+        return Results.BadRequest(new { message = "Författare är obligatorisk och får vara högst 100 tecken." });
+    }
+    if (!string.IsNullOrWhiteSpace(input.Description) && input.Description.Trim().Length > 2000)
+    {
+        return Results.BadRequest(new { message = "Beskrivning får vara högst 2000 tecken." });
+    }
+    if (!string.IsNullOrWhiteSpace(input.CoverImageUrl) && input.CoverImageUrl.Trim().Length > 1000)
+    {
+        return Results.BadRequest(new { message = "Omslagsbildens URL får vara högst 1000 tecken." });
     }
 
     var userId = UserId(user);
@@ -311,9 +339,13 @@ books.MapPut("/{id:int}", async (int id, BookInput input, ClaimsPrincipal user, 
     if (book is null) return Results.NotFound();
     if (book.CreatorId != userId) return Results.Forbid();
 
+    var publicationDate = string.IsNullOrWhiteSpace(input.PublicationDate)
+        ? book.PublicationDate
+        : input.PublicationDate.Trim();
+
     book.Title = input.Title.Trim();
     book.Author = input.Author.Trim();
-    book.PublicationDate = input.PublicationDate.Trim();
+    book.PublicationDate = publicationDate;
     book.Description = string.IsNullOrWhiteSpace(input.Description) ? null : input.Description.Trim();
     book.CoverImageUrl = string.IsNullOrWhiteSpace(input.CoverImageUrl) ? null : input.CoverImageUrl.Trim();
 
