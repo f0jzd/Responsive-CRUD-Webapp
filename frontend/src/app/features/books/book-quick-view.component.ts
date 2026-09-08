@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostListener, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Book } from '../../core/models';
+import { AuthService } from '../../core/auth.service';
 
 @Component({
   selector: 'app-book-quick-view',
@@ -10,8 +11,15 @@ import { Book } from '../../core/models';
     <div class="modal d-block" tabindex="-1" role="dialog" style="background-color: rgba(0,0,0,0.5);" (click)="onBackdropClick($event)">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content bg-dark text-light border-secondary">
-          <div class="modal-header border-secondary">
-            <h5 class="modal-title">{{ book.title }}</h5>
+          <div class="modal-header border-secondary d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <h5 class="modal-title mb-0">{{ book.title }}</h5>
+              @if (isCreator()) {
+                <span class="badge bg-success text-white small">
+                  <i class="fa-solid fa-user-check me-1"></i>Created by you
+                </span>
+              }
+            </div>
             <button type="button" class="btn-close btn-close-white" aria-label="Close" (click)="close.emit()"></button>
           </div>
           <div class="modal-body">
@@ -32,8 +40,15 @@ import { Book } from '../../core/models';
   `
 })
 export class BookQuickViewComponent {
+  private authService = inject(AuthService);
+
   @Input() book!: Book;
   @Output() close = new EventEmitter<void>();
+
+  isCreator = computed(() => {
+    const user = this.authService.currentUser();
+    return !!user && !!this.book && user.id === this.book.creatorId;
+  });
 
   @HostListener('window:keydown.escape')
   onEscape() {

@@ -2,10 +2,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BookQuickViewComponent } from './book-quick-view.component';
 import { Book } from '../../core/models';
 import { By } from '@angular/platform-browser';
+import { AuthService } from '../../core/auth.service';
+import { signal } from '@angular/core';
 
 describe('BookQuickViewComponent', () => {
   let component: BookQuickViewComponent;
   let fixture: ComponentFixture<BookQuickViewComponent>;
+
+  const currentUserSignal = signal<{ id: number; email: string } | null>(null);
+  const mockAuthService = {
+    currentUser: currentUserSignal
+  };
 
   const mockBook: Book = {
     id: 1,
@@ -19,8 +26,13 @@ describe('BookQuickViewComponent', () => {
   };
 
   beforeEach(async () => {
+    currentUserSignal.set(null);
+
     await TestBed.configureTestingModule({
-      imports: [BookQuickViewComponent]
+      imports: [BookQuickViewComponent],
+      providers: [
+        { provide: AuthService, useValue: mockAuthService }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(BookQuickViewComponent);
@@ -39,6 +51,27 @@ describe('BookQuickViewComponent', () => {
     
     const imgEl = fixture.debugElement.query(By.css('img')).nativeElement;
     expect(imgEl.src).toContain('test-image.jpg');
+  });
+
+  it('shows "Created by you" badge when the logged-in user is the book creator', () => {
+    currentUserSignal.set({ id: 1, email: 'creator@example.com' });
+    fixture.detectChanges();
+
+    const badge = fixture.debugElement.query(By.css('.badge.bg-success'));
+    expect(badge).not.toBeNull();
+    expect(badge.nativeElement.textContent).toContain('Created by you');
+  });
+
+  it('does not show "Created by you" badge when logged out or when user is not the creator', () => {
+    // Logged out
+    currentUserSignal.set(null);
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.badge.bg-success'))).toBeNull();
+
+    // Logged in as different user
+    currentUserSignal.set({ id: 99, email: 'other@example.com' });
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.badge.bg-success'))).toBeNull();
   });
 
   it('emits close event when close button is clicked', () => {
