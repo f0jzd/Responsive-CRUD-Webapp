@@ -167,4 +167,50 @@ public class BookCreatorAuthorizationTests : IClassFixture<AppFactory>
         var getResponse = await _client.GetAsync($"/api/books/{book.Id}");
         Assert.Equal(HttpStatusCode.NotFound, getResponse.StatusCode);
     }
+
+    // ─── GET /api/books/mine (User Contributions) ────────────────────────
+
+    [Fact]
+    public async Task GetMyBooks_WithoutToken_Returns401Unauthorized()
+    {
+        var response = await _client.GetAsync("/api/books/mine");
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task GetMyBooks_ReturnsOnlyBooksCreatedByCurrentUser()
+    {
+        var userToken = await GetTokenAsync("contributor@example.com", "Password123!");
+        var book1 = await CreateBookAsAsync(userToken, "Contributor Book 1");
+        var book2 = await CreateBookAsAsync(userToken, "Contributor Book 2");
+
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/books/mine");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userToken);
+
+        var response = await _client.SendAsync(request);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var myBooks = await response.Content.ReadFromJsonAsync<List<BookDto>>();
+        Assert.NotNull(myBooks);
+        Assert.True(myBooks.Count >= 2);
+        Assert.All(myBooks, b => Assert.Equal("contributor@example.com", b.CreatorEmail));
+        Assert.Contains(myBooks, b => b.Id == book1.Id);
+        Assert.Contains(myBooks, b => b.Id == book2.Id);
+    }
+
+    [Fact]
+    public async Task GetMyBooks_WhenUserHasNoBooks_ReturnsEmptyList()
+    {
+        var emptyUserToken = await GetTokenAsync("nobooks@example.com", "Password123!");
+
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/books/mine");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", emptyUserToken);
+
+        var response = await _client.SendAsync(request);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var myBooks = await response.Content.ReadFromJsonAsync<List<BookDto>>();
+        Assert.NotNull(myBooks);
+        Assert.Empty(myBooks);
+    }
 }

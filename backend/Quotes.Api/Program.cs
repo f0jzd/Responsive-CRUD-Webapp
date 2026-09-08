@@ -241,6 +241,29 @@ books.MapGet("/", async (AppDbContext db) =>
     return Results.Ok(list);
 });
 
+books.MapGet("/mine", async (ClaimsPrincipal user, AppDbContext db) =>
+{
+    var userId = UserId(user);
+    var list = await (from b in db.Books
+                      where b.CreatorId == userId
+                      join u in db.Users on b.CreatorId equals u.Id into userGroup
+                      from u in userGroup.DefaultIfEmpty()
+                      orderby b.CreatedAtUtc descending
+                      select new BookDto(
+                          b.Id,
+                          b.Title,
+                          b.Author,
+                          b.PublicationDate,
+                          b.Description,
+                          b.CoverImageUrl,
+                          b.CreatorId,
+                          u != null ? u.Email : null,
+                          b.CreatedAtUtc
+                      )).ToListAsync();
+
+    return Results.Ok(list);
+}).RequireAuthorization();
+
 books.MapGet("/{id:int}", async (int id, AppDbContext db) =>
 {
     var book = await (from b in db.Books
