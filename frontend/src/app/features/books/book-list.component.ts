@@ -145,10 +145,16 @@ import { BookQuickViewComponent } from './book-quick-view.component';
 
                   <!-- Footer / Actions -->
                   <div class="pt-2 border-top d-flex align-items-center justify-content-between mt-auto" style="border-color: #30363d !important;">
-                    <span class="badge bg-dark border border-secondary text-secondary small" [title]="'Skapad av ' + (book.creatorEmail || 'Okänd')">
-                      <i class="fa-regular fa-user me-1 text-info"></i>
-                      {{ book.creatorEmail ? book.creatorEmail.split('@')[0] : 'Användare' }}
-                    </span>
+                    @if (isCreator(book)) {
+                      <span class="badge bg-success text-white small">
+                        <i class="fa-solid fa-user-check me-1"></i>Created by you
+                      </span>
+                    } @else {
+                      <span class="badge bg-dark border border-secondary text-secondary small" [title]="'Skapad av ' + (book.creatorEmail || 'Okänd')">
+                        <i class="fa-regular fa-user me-1 text-info"></i>
+                        {{ book.creatorEmail ? book.creatorEmail.split('@')[0] : 'Användare' }}
+                      </span>
+                    }
 
                     @if (isCreator(book)) {
                       <div class="btn-group btn-group-sm">
@@ -163,7 +169,7 @@ import { BookQuickViewComponent } from './book-quick-view.component';
                         <button
                           type="button"
                           class="btn btn-outline-danger"
-                          (click)="$event.stopPropagation(); deleteBook(book)"
+                          (click)="$event.stopPropagation(); requestDeleteBook(book)"
                           title="Radera bok"
                         >
                           <i class="fa-solid fa-trash-can me-1"></i>Radera
@@ -181,6 +187,65 @@ import { BookQuickViewComponent } from './book-quick-view.component';
       <!-- Quick View Modal -->
       @if (selectedBook()) {
         <app-book-quick-view [book]="selectedBook()!" (close)="selectedBook.set(null)"></app-book-quick-view>
+      }
+
+      <!-- Delete Confirmation Modal -->
+      @if (bookToDelete()) {
+        <div
+          class="modal d-block"
+          tabindex="-1"
+          role="dialog"
+          style="background-color: rgba(0,0,0,0.6);"
+          (click)="onDeleteModalBackdropClick($event)"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content bg-dark text-light border-danger shadow-lg">
+              <div class="modal-header border-secondary">
+                <h5 class="modal-title text-danger d-flex align-items-center">
+                  <i class="fa-solid fa-triangle-exclamation me-2"></i>Bekräfta borttagning
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close btn-close-white"
+                  aria-label="Avbryt"
+                  [disabled]="isDeleting()"
+                  (click)="cancelDelete()"
+                ></button>
+              </div>
+              <div class="modal-body py-4">
+                <p class="mb-2">
+                  Är du säker på att du vill ta bort <strong class="text-white">"{{ bookToDelete()?.title }}"</strong> från den gemensamma katalogen?
+                </p>
+                <p class="text-danger small mb-0">
+                  <i class="fa-solid fa-circle-info me-1"></i>Denna åtgärd är permanent och kan inte ångras.
+                </p>
+              </div>
+              <div class="modal-footer border-secondary">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  [disabled]="isDeleting()"
+                  (click)="cancelDelete()"
+                >
+                  Avbryt
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger d-flex align-items-center"
+                  [disabled]="isDeleting()"
+                  (click)="confirmDelete()"
+                >
+                  @if (isDeleting()) {
+                    <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                    Raderar...
+                  } @else {
+                    <i class="fa-solid fa-trash-can me-1"></i>Radera bok
+                  }
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       }
     </div>
   `,
@@ -212,6 +277,8 @@ export class BookListComponent implements OnInit {
   searchTerm = signal('');
   isLoading = signal(true);
   selectedBook = signal<Book | null>(null);
+  bookToDelete = signal<Book | null>(null);
+  isDeleting = signal(false);
 
   filteredBooks = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
@@ -257,18 +324,35 @@ export class BookListComponent implements OnInit {
     return !!currentUser && currentUser.id === book.creatorId;
   }
 
-  deleteBook(book: Book) {
-    if (!confirm(`Är du säker på att du vill ta bort "${book.title}" från katalogen?`)) {
-      return;
-    }
+  requestDeleteBook(book: Book) {
+    this.bookToDelete.set(book);
+  }
 
+  cancelDelete() {
+    this.bookToDelete.set(null);
+  }
+
+  onDeleteModalBackdropClick(event: MouseEvent) {
+    if (!this.isDeleting() && (event.target as HTMLElement).classList.contains('modal')) {
+      this.cancelDelete();
+    }
+  }
+
+  confirmDelete() {
+    const book = this.bookToDelete();
+    if (!book) return;
+
+    this.isDeleting.set(true);
     this.bookService.deleteBook(book.id).subscribe({
       next: () => {
         this.books.update(list => list.filter(b => b.id !== book.id));
         this.toast.success(`Boken "${book.title}" har raderats.`);
+        this.isDeleting.set(false);
+        this.bookToDelete.set(null);
       },
       error: () => {
         this.toast.danger('Kunde inte radera boken. Kontrollera att du har behörighet.');
+        this.isDeleting.set(false);
       }
     });
   }
