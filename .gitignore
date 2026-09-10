@@ -44,4 +44,6 @@ logs/
 
 # Runtime outputs
 dist/
-notes.txt
+*.db-shm
+*.db-wal
+*-journal

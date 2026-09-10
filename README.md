@@ -43,8 +43,19 @@ npm start
 Öppna webbläsaren på `http://localhost:4200`.
 
 ## Tester
-Backend-tester kan köras via:
+
+Kör automatiserade enhets- och integrationstester:
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\.scratch\test_api.ps1
+# Backend (38 xUnit-tester)
+dotnet test .\backend\Catalog.Api.Tests\Catalog.Api.Tests.csproj
+
+# Frontend (30 Jest-tester)
+cd frontend
+npm test
+```
+
+Interaktiva API-tester kan köras mot en aktiv backend via:
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\test_api.ps1
 ```
 
