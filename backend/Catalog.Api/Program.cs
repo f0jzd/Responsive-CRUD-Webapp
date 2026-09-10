@@ -13,11 +13,21 @@ var builder = WebApplication.CreateBuilder(args);
 var jwt = builder.Configuration.GetSection("Jwt");
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!));
 
-var dbPath = Path.Combine(builder.Environment.ContentRootPath, "books.db");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite($"Data Source={dbPath}"));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    var dbPath = Path.Combine(builder.Environment.ContentRootPath, "books.db");
+    connectionString = $"Data Source={dbPath}";
+}
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
+
+var configuredOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+var allowedOrigins = (configuredOrigins != null && configuredOrigins.Length > 0)
+    ? configuredOrigins
+    : new[] { "http://localhost:4200" };
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy
-    .WithOrigins("http://localhost:4200")
+    .WithOrigins(allowedOrigins)
     .AllowAnyHeader()
     .AllowAnyMethod()));
 
