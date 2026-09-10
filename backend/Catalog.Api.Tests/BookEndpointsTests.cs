@@ -1,9 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
-using Quotes.Api;
+using Catalog.Api;
 
-namespace Quotes.Api.Tests;
+namespace Catalog.Api.Tests;
 
 /// <summary>
 /// Integration tests for the public book catalog endpoints (Issue #1).

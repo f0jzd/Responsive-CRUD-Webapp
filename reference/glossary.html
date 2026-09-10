@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reference: Core Web Development Glossary</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="lesson-meta">Reference Document • AI Basics Book Catalog</div>
+      <h1>Core Architecture Glossary</h1>
+      <p>A fast lookup guide for foundational full-stack concepts encountered across Issue #1 and the Book Catalog project.</p>
+    </header>
+
+    <main>
+      <section>
+        <h2>The Architecture Layers</h2>
+        <dl>
+          <dt><strong>Client (Frontend / Browser)</strong></dt>
+          <dd>The interface running on the user's computer inside Google Chrome, Safari, or Firefox. Built with Angular and TypeScript in our project.</dd>
+
+          <dt><strong>Server (Backend / Web API)</strong></dt>
+          <dd>The background program waiting for requests over the network. It handles business logic and security. Built with C# and ASP.NET Core in our project.</dd>
+
+          <dt><strong>Database (Storage)</strong></dt>
+          <dd>The durable place where records survive even when servers or computers restart. In Issue #1, we use <code>books.db</code>, a single SQLite database file on disk.</dd>
+        </dl>
+
+        <h2>Data Flow &amp; Communication</h2>
+        <dl>
+          <dt><strong>HTTP Request &amp; Response</strong></dt>
+          <dd>The universal postal system of the web. The browser sends a <em>Request</em> (e.g. <code>GET /api/books</code>) and the server answers with a <em>Response</em> containing status codes and data.</dd>
+
+          <dt><strong>JSON (JavaScript Object Notation)</strong></dt>
+          <dd>The text format used to exchange structured data over HTTP. Both C# on the server and TypeScript on the client can effortlessly convert objects to and from JSON.</dd>
+
+          <dt><strong>REST API Endpoint</strong></dt>
+          <dd>A specific URL exposed by the backend where clients can ask for data or trigger actions (e.g. <code>GET /api/books/3</code> asks for book ID 3).</dd>
+
+          <dt><strong>ORM (Object-Relational Mapper) / Entity Framework Core</strong></dt>
+          <dd>A translator library that allows developers to query and save database records using native C# objects and classes without writing raw SQL strings by hand.</dd>
+        </dl>
+
+        <h2>Frontend Concepts</h2>
+        <dl>
+          <dt><strong>Single-Page Application (SPA)</strong></dt>
+          <dd>A web application that loads once. When the user searches or navigates, the page does not reload completely; JavaScript just repaints the updated content.</dd>
+
+          <dt><strong>Angular Component</strong></dt>
+          <dd>A self-contained building block of UI combining an HTML template (what it looks like), TypeScript logic (how it behaves), and CSS styles.</dd>
+
+          <dt><strong>Signal (State)</strong></dt>
+          <dd>A reactive value container in modern Angular. When the value inside a signal changes, Angular automatically updates the exact parts of the screen that read it.</dd>
+
+          <dt><strong>Client-Side Filtering</strong></dt>
+          <dd>Searching and filtering data entirely in the browser's memory using JavaScript/TypeScript, giving users instant results as they type without asking the server again on every keystroke.</dd>
+        </dl>
+      </section>
+    </main>
+
+    <footer>
+      <p>Part of the Book Catalog learning workspace. Grounded in <a href="../MISSION.md">MISSION.md</a>.</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 0002: Understanding Angular and Its Files</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="lesson-meta">Lesson 0002 • Frontend Fundamentals</div>
+      <h1>Understanding Angular &amp; How Angular Files Work</h1>
+      <p>A hands-on breakdown of Angular components, file naming conventions, and how the frontend code in Issue #1 comes to life.</p>
+    </header>
+
+    <main>
+      <section>
+        <h2>What Exactly Is Angular?</h2>
+        <p>
+          In a classic website from 2005, clicking a link meant asking the server to build a brand-new HTML page and reload the entire browser window.
+        </p>
+        <p>
+          <strong>Angular</strong> is a modern frontend framework that turns your website into a <strong>Single-Page Application (SPA)</strong>. The browser loads the website once. From then on, Angular dynamically updates only the parts of the screen that need to change—without page refreshes.
+        </p>
+
+        <div class="callout callout-insight">
+          <div class="callout-title">The Mental Model: LEGO Bricks</div>
+          In Angular, everything on screen is built from <strong>Components</strong>. Think of a component as an interactive LEGO brick containing its own look (HTML), its own brain (TypeScript), and its own style (CSS). You build complex apps by snapping small components together.
+        </div>
+      </section>
+
+      <section>
+        <h2>The Angular File Anatomy</h2>
+        <p>
+          When you inspect the <code>frontend/src/app</code> directory in our project, you will notice files ending in specific suffixes. Each suffix tells Angular and you what that file's job is:
+        </p>
+
+        <ul>
+          <li>
+            <code>book-list.component.ts</code>: The component file. It displays the grid of book cards and handles search input.
+          </li>
+          <li>
+            <code>book.service.ts</code>: The service file. It makes HTTP calls to the .NET backend API to fetch book data.
+          </li>
+          <li>
+            <code>book-list.component.spec.ts</code>: The automated test file. It runs unit tests to ensure searching works properly.
+          </li>
+          <li>
+            <code>app.routes.ts</code>: The router map. It maps URL paths (like <code>/books</code>) to specific components.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Inside a Component: The 3 Core Parts</h2>
+        <p>
+          Let's open up <code>book-list.component.ts</code> from Issue #1. Click each tab below to see how each part works:
+        </p>
+
+        <div class="interactive-pipeline">
+          <div class="pipeline-steps">
+            <button class="step-btn active" onclick="showPart(0)">1. The Decorator (@Component)</button>
+            <button class="step-btn" onclick="showPart(1)">2. The Template (HTML)</button>
+            <button class="step-btn" onclick="showPart(2)">3. The Brain (TypeScript Class)</button>
+            <button class="step-btn" onclick="showPart(3)">4. Signals (Reactive State)</button>
+          </div>
+
+          <div class="step-detail-card" id="part-detail">
+            <div class="step-detail-title" id="part-title">1. The @Component Decorator</div>
+            <p class="step-detail-desc" id="part-desc">
+              The decorator is the "ID badge" of the component. It tells Angular its HTML tag name (<code>selector: 'app-book-list'</code>) and lists any extra tools or components it needs to use.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>What Is a "Signal"?</h2>
+        <p>
+          In <code>book-list.component.ts</code>, you'll see lines like:
+        </p>
+        <pre><code>searchTerm = signal('');
+books = signal&lt;Book[]&gt;([]);</code></pre>
+        <p>
+          A <strong>Signal</strong> is like a smart variable with an alert system. When someone types in the search bar, <code>searchTerm</code> updates. Angular notices the change immediately and automatically re-calculates <code>filteredBooks</code> and repaints the screen. You don't have to write manual code to redraw elements!
+        </p>
+
+        <div class="callout callout-source">
+          <div class="callout-title">Primary Source for Further Reading</div>
+          Read the official guide: <a href="https://angular.dev/guide/components" target="_blank" rel="noopener">Angular.dev: Components Overview</a>. This is the canonical reference for modern Angular standalone components.
+        </div>
+      </section>
+
+      <section class="quiz-section">
+        <div class="quiz-header">Knowledge Check &amp; Retrieval Practice</div>
+
+        <!-- Question 1 -->
+        <div class="quiz-card" id="q1">
+          <div class="quiz-question">1. What is the main purpose of an Angular component?</div>
+          <ul class="quiz-options">
+            <li class="quiz-option">
+              <label><input type="radio" name="q1" value="a"> Combines template layout with logic.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q1" value="b"> Directly reads the database file.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q1" value="c"> Replaces backend web server code.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q1" value="d"> Encrypts user passwords inside memory.</label>
+            </li>
+          </ul>
+          <button class="check-btn" onclick="checkQ1()">Check Answer</button>
+          <div class="quiz-feedback" id="q1-fb"></div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-card" id="q2">
+          <div class="quiz-question">2. What does a <code>*.service.ts</code> file typically do?</div>
+          <ul class="quiz-options">
+            <li class="quiz-option">
+              <label><input type="radio" name="q2" value="a"> Fetches data across the network.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q2" value="b"> Renders visible buttons on screen.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q2" value="c"> Styles components with custom colors.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q2" value="d"> Compiles TypeScript to machine assembly.</label>
+            </li>
+          </ul>
+          <button class="check-btn" onclick="checkQ2()">Check Answer</button>
+          <div class="quiz-feedback" id="q2-fb"></div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-card" id="q3">
+          <div class="quiz-question">3. What is a modern Angular Signal used for?</div>
+          <ul class="quiz-options">
+            <li class="quiz-option">
+              <label><input type="radio" name="q3" value="a"> Storing reactive state that updates.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q3" value="b"> Sending raw SQL query statements.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q3" value="c"> Creating database tables on startup.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q3" value="d"> Generating random web browser identifiers.</label>
+            </li>
+          </ul>
+          <button class="check-btn" onclick="checkQ3()">Check Answer</button>
+          <div class="quiz-feedback" id="q3-fb"></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="callout callout-insight">
+          <div class="callout-title">Have Questions? Ask Your Agent!</div>
+          Which part of the component structure feels easiest to grasp, and which part feels most confusing? Ask me anything right here in chat!
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Tied to <a href="../MISSION.md">MISSION.md</a> • Check the <a href="../reference/angular-file-types.html">Angular File Types Reference</a>.</p>
+      <div class="nav-links">
+        <span><a href="0001-the-big-picture-how-the-web-works.html">← Lesson 0001: The Big Picture</a></span>
+        <span>Lesson 0003: Coming Next (The Backend &amp; SQLite) →</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const parts = [
+      {
+        title: "1. The @Component Decorator",
+        desc: "The decorator sits right above the class: <code>@Component({ selector: 'app-book-list', ... })</code>. It tells Angular: 'This TypeScript class is not a plain script; it is a visual UI component named app-book-list'."
+      },
+      {
+        title: "2. The Template (HTML Layout)",
+        desc: "Inside <code>template: `...`</code>, you write standard HTML mixed with Angular superpowers like <code>@for (book of filteredBooks())</code> to loop through books and create cards dynamically."
+      },
+      {
+        title: "3. The Brain (TypeScript Class)",
+        desc: "The class <code>export class BookListComponent</code> holds variables (like the list of books) and methods (like <code>loadBooks()</code>) that fetch data when the user opens the catalog."
+      },
+      {
+        title: "4. Signals (Reactive State)",
+        desc: "Variables defined with <code>signal()</code> notify Angular whenever their value changes. Angular automatically re-evaluates <code>computed()</code> calculations (like search filtering) and repaints the screen."
+      }
+    ];
+
+    function showPart(index) {
+      const buttons = document.querySelectorAll('.step-btn');
+      buttons.forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+      });
+      document.getElementById('part-title').innerHTML = parts[index].title;
+      document.getElementById('part-desc').innerHTML = parts[index].desc;
+    }
+
+    function checkQ1() {
+      const selected = document.querySelector('input[name="q1"]:checked');
+      const fb = document.getElementById('q1-fb');
+      if (!selected) {
+        fb.className = 'quiz-feedback incorrect';
+        fb.textContent = 'Please choose an option first.';
+        return;
+      }
+      if (selected.value === 'a') {
+        fb.className = 'quiz-feedback correct';
+        fb.textContent = 'Correct! A component bundles the HTML template (what you see) with TypeScript logic (how it behaves).';
+      } else {
+        fb.className = 'quiz-feedback incorrect';
+        fb.textContent = 'Not quite. An Angular component combines the visual HTML template with its TypeScript logic.';
+      }
+    }
+
+    function checkQ2() {
+      const selected = document.querySelector('input[name="q2"]:checked');
+      const fb = document.getElementById('q2-fb');
+      if (!selected) {
+        fb.className = 'quiz-feedback incorrect';
+        fb.textContent = 'Please choose an option first.';
+        return;
+      }
+      if (selected.value === 'a') {
+        fb.className = 'quiz-feedback correct';
+        fb.textContent = 'Correct! Services handle data fetching and communication with backend APIs, keeping components focused on the UI.';
+      } else {
+        fb.className = 'quiz-feedback incorrect';
+        fb.textContent = 'Not quite. Services act as messengers that fetch data across HTTP network endpoints.';
+      }
+    }
+
+    function checkQ3() {
+      const selected = document.querySelector('input[name="q3"]:checked');
+      const fb = document.getElementById('q3-fb');
+      if (!selected) {
+        fb.className = 'quiz-feedback incorrect';
+        fb.textContent = 'Please choose an option first.';
+        return;
+      }
+      if (selected.value === 'a') {
+        fb.className = 'quiz-feedback correct';
+        fb.textContent = 'Correct! Signals store state and automatically alert Angular when data updates so the UI stays synchronized.';
+      } else {
+        fb.className = 'quiz-feedback incorrect';
+        fb.textContent = 'Not quite. Signals store reactive state, alerting Angular whenever values change.';
+      }
+    }
+  </script>
+</body>
+</html>

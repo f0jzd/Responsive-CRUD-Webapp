@@ -14,6 +14,6 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Quotes.Api\Quotes.Api.csproj" />
+    <ProjectReference Include="..\Catalog.Api\Catalog.Api.csproj" />
   </ItemGroup>
 </Project>

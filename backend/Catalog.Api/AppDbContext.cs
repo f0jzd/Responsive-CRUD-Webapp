@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Quotes.Api;
+namespace Catalog.Api;
 
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {

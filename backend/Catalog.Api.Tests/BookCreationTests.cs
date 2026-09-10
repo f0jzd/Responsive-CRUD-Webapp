@@ -3,9 +3,9 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Xunit;
-using Quotes.Api;
+using Catalog.Api;
 
-namespace Quotes.Api.Tests;
+namespace Catalog.Api.Tests;
 
 public class BookCreationTests : IClassFixture<AppFactory>
 {

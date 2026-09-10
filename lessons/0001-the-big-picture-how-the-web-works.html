@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 0001: The Big Picture of Full-Stack Web Apps</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="lesson-meta">Lesson 0001 • Foundation Series</div>
+      <h1>The Big Picture: How the 3 Pieces Connect</h1>
+      <p>Before looking at code, let's understand the physical reality of how a modern web app like our Book Catalog actually functions.</p>
+    </header>
+
+    <main>
+      <section>
+        <h2>Why Are There Three Separate Pieces?</h2>
+        <p>
+          When you open a web application, you are not interacting with one giant monolith. Instead, three distinct players work together across space and time:
+        </p>
+
+        <ol>
+          <li>
+            <strong>The Frontend (Browser Client):</strong> Built with <strong>Angular</strong>. It runs locally on your laptop inside Chrome or Safari. Its only job is to turn data into pixels, listen to your mouse clicks, and update the screen instantly.
+          </li>
+          <li>
+            <strong>The Backend (Web API Server):</strong> Built with <strong>C# &amp; ASP.NET Core</strong>. It runs in the background. Its job is to guard access, enforce business logic, and answer questions sent over the network.
+          </li>
+          <li>
+            <strong>The Database (Storage Engine):</strong> Powered by <strong>SQLite &amp; EF Core</strong>. It lives on a hard drive (a file named <code>books.db</code>). Its job is to remember books even if the computer restarts.
+          </li>
+        </ol>
+
+        <div class="callout callout-insight">
+          <div class="callout-title">The Golden Rule of the Web</div>
+          A web browser cannot directly read files from your database file on disk. If browsers could read server hard drives directly, anyone visiting a website could steal private user passwords! The backend acts as a strict security guard standing between the browser and the database.
+        </div>
+      </section>
+
+      <section>
+        <h2>The Life of a Request in Issue #1</h2>
+        <p>
+          Click through each stage below to trace what happens when someone opens our Book Catalog:
+        </p>
+
+        <div class="interactive-pipeline">
+          <div class="pipeline-steps">
+            <button class="step-btn active" onclick="showStep(0)">1. Page Loads</button>
+            <button class="step-btn" onclick="showStep(1)">2. HTTP Request</button>
+            <button class="step-btn" onclick="showStep(2)">3. Backend API</button>
+            <button class="step-btn" onclick="showStep(3)">4. Database Query</button>
+            <button class="step-btn" onclick="showStep(4)">5. JSON Response</button>
+            <button class="step-btn" onclick="showStep(5)">6. Screen Renders</button>
+            <button class="step-btn" onclick="showStep(6)">7. Instant Search</button>
+          </div>
+
+          <div class="step-detail-card" id="step-detail">
+            <div class="step-detail-title" id="step-title">Step 1: The User Opens the Catalog</div>
+            <p class="step-detail-desc" id="step-desc">
+              The user navigates to the website in their browser. The Angular application boots up into memory. At this instant, the catalog list is empty because the browser does not yet have any book data.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Why Real-Time Search Happens in the Browser</h2>
+        <p>
+          In Issue #1, the requirement says: <em>"Real-time client-side search input filters books by title/author."</em>
+        </p>
+        <p>
+          Notice the words <strong>client-side</strong>. Once the browser receives the full list of books from the server, all the book information sits safely in your computer's RAM. When you type letters into the search box, Angular filters the list already in memory. It does not need to wait for the server on every keystroke, making the catalog feel instant and snappy!
+        </p>
+
+        <div class="callout callout-source">
+          <div class="callout-title">Primary Source for Further Reading</div>
+          Read the MDN overview: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/How_the_Web_works" target="_blank" rel="noopener">MDN: How the Web Works</a>. This is the canonical primer on how clients, servers, and IP packets interact.
+        </div>
+      </section>
+
+      <section class="quiz-section">
+        <div class="quiz-header">Knowledge Check &amp; Retrieval Practice</div>
+
+        <!-- Question 1 -->
+        <div class="quiz-card" id="q1">
+          <div class="quiz-question">1. Why can't an Angular browser app read the SQLite <code>books.db</code> file directly?</div>
+          <ul class="quiz-options">
+            <li class="quiz-option">
+              <label><input type="radio" name="q1" value="a"> Browsers cannot access server files.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q1" value="b"> SQLite files are written backwards.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q1" value="c"> Angular only supports text files.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q1" value="d"> JavaScript lacks string parsing tools.</label>
+            </li>
+          </ul>
+          <button class="check-btn" onclick="checkQ1()">Check Answer</button>
+          <div class="quiz-feedback" id="q1-fb"></div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="quiz-card" id="q2">
+          <div class="quiz-question">2. What format is used when the backend sends book records to the browser?</div>
+          <ul class="quiz-options">
+            <li class="quiz-option">
+              <label><input type="radio" name="q2" value="a"> Pure binary assembly machine code.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q2" value="b"> Formatted JavaScript Object Notation text.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q2" value="c"> Compiled C sharp dynamic libraries.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q2" value="d"> Compressed raw hard drive sectors.</label>
+            </li>
+          </ul>
+          <button class="check-btn" onclick="checkQ2()">Check Answer</button>
+          <div class="quiz-feedback" id="q2-fb"></div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="quiz-card" id="q3">
+          <div class="quiz-question">3. Why does search in Issue #1 filter books directly on the client side?</div>
+          <ul class="quiz-options">
+            <li class="quiz-option">
+              <label><input type="radio" name="q3" value="a"> Typing instantly updates without server delay.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q3" value="b"> Databases cannot search authors or titles.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q3" value="c"> Servers refuse multiple rapid network connections.</label>
+            </li>
+            <li class="quiz-option">
+              <label><input type="radio" name="q3" value="d"> Browsers prohibit sending text over networks.</label>
+            </li>
+          </ul>
+          <button class="check-btn" onclick="checkQ3()">Check Answer</button>
+          <div class="quiz-feedback" id="q3-fb"></div>
+        </div>
+      </section>
+
+      <section>
+        <div class="callout callout-insight">
+          <div class="callout-title">Have Questions? Ask Your Agent!</div>
+          Remember: I am your personal tutor. If anything about this client-server loop, JSON, or SQLite feels unclear, reply right now in the chat with your question!
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Tied to <a href="../MISSION.md">MISSION.md</a> • Check the <a href="../reference/glossary.html">Reference Glossary</a> for vocabulary.</p>
+      <div class="nav-links">
+        <span>Previous: None</span>
+        <span>Next: Lesson 0002 (The Database &amp; EF Core)</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const steps = [
+      {
+        title: "Step 1: The User Opens the Catalog",
+        desc: "The user navigates to the website in their browser. The Angular application boots up into memory. At this instant, the catalog list is empty because the browser does not yet have any book data."
+      },
+      {
+        title: "Step 2: Angular Dispatches an HTTP GET Request",
+        desc: "Angular makes a network call: <code>GET http://localhost:5000/api/books</code>. This request travels over your local network like an electronic envelope asking for the catalog."
+      },
+      {
+        title: "Step 3: ASP.NET Core Web API Receives the Request",
+        desc: "The backend server catches the request at its <code>/api/books</code> endpoint. It verifies that the request is valid and prepares to fetch the books."
+      },
+      {
+        title: "Step 4: EF Core Queries the SQLite Database",
+        desc: "Entity Framework Core (EF Core) acts as the translator. It queries the <code>books.db</code> file on disk, reads the stored book rows, and transforms them into C# Book objects."
+      },
+      {
+        title: "Step 5: The Backend Replies with JSON Data",
+        desc: "The C# server translates the Book objects into a JSON text payload (an array of books with titles, authors, and descriptions) and sends it back in the HTTP Response."
+      },
+      {
+        title: "Step 6: Angular Renders the Responsive Card Grid",
+        desc: "Angular receives the JSON array, stores it in its component state (a Signal), and dynamically renders a visual card on the screen for each book."
+      },
+      {
+        title: "Step 7: Real-Time Client-Side Filtering",
+        desc: "When the user types into the search box, Angular instantly re-filters the books already in browser memory—giving instantaneous feedback without having to re-fetch from the database!"
+      }
+    ];
+
+    function showStep(index) {
+      const buttons = document.querySelectorAll('.step-btn');
+      buttons.forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+      });
+      document.getElementById('step-title').innerHTML = steps[index].title;
+      document.getElementById('step-desc').innerHTML = steps[index].desc;
+    }
+
+    function checkQ1() {
+      const selected = document.querySelector('input[name="q1"]:checked');
+      const fb = document.getElementById('q1-fb');
+      if (!selected) {
+        fb.className = 'quiz-feedback incorrect';
+        fb.textContent = 'Please choose an option first.';
+        return;
+      }
+      if (selected.value === 'a') {
+        fb.className = 'quiz-feedback correct';
+        fb.textContent = 'Correct! Browsers run in a sandboxed client environment and cannot directly read files from the server hard drive for critical security reasons.';
+      } else {
+        fb.className = 'quiz-feedback incorrect';
+        fb.textContent = 'Not quite. Browsers are deliberately restricted from accessing server filesystem files directly for security reasons.';
+      }
+    }
+
+    function checkQ2() {
+      const selected = document.querySelector('input[name="q2"]:checked');
+      const fb = document.getElementById('q2-fb');
+      if (!selected) {
+        fb.className = 'quiz-feedback incorrect';
+        fb.textContent = 'Please choose an option first.';
+        return;
+      }
+      if (selected.value === 'b') {
+        fb.className = 'quiz-feedback correct';
+        fb.textContent = 'Correct! JSON (JavaScript Object Notation) is the universal text format used to serialize structured data across HTTP.';
+      } else {
+        fb.className = 'quiz-feedback incorrect';
+        fb.textContent = 'Not quite. Web APIs exchange structured text using JSON (JavaScript Object Notation).';
+      }
+    }
+
+    function checkQ3() {
+      const selected = document.querySelector('input[name="q3"]:checked');
+      const fb = document.getElementById('q3-fb');
+      if (!selected) {
+        fb.className = 'quiz-feedback incorrect';
+        fb.textContent = 'Please choose an option first.';
+        return;
+      }
+      if (selected.value === 'a') {
+        fb.className = 'quiz-feedback correct';
+        fb.textContent = 'Correct! Because the books are already loaded into browser memory, filtering locally avoids network latency on every keystroke.';
+      } else {
+        fb.className = 'quiz-feedback incorrect';
+        fb.textContent = 'Not quite. Client-side filtering keeps the user interface responsive and snappy by avoiding round-trip network delays on every keystroke.';
+      }
+    }
+  </script>
+</body>
+</html>

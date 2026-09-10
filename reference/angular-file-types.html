@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reference: Angular File Types &amp; Conventions</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="lesson-meta">Reference Document • AI Basics Book Catalog</div>
+      <h1>Angular File Types &amp; Conventions</h1>
+      <p>A quick-reference cheat sheet for identifying and navigating Angular files in this codebase.</p>
+    </header>
+
+    <main>
+      <section>
+        <h2>File Suffixes &amp; Their Responsibilities</h2>
+        <dl>
+          <dt><code>*.component.ts</code> — The Visual Building Block</dt>
+          <dd>
+            Defines a UI element (e.g. <code>book-list.component.ts</code>). Bundles the HTML template (what you see), CSS styles (how it looks), and TypeScript class (how it reacts to clicks or typing).
+          </dd>
+
+          <dt><code>*.service.ts</code> — The Data Messenger</dt>
+          <dd>
+            A reusable helper class (e.g. <code>book.service.ts</code>). It contains no HTML. Its sole purpose is fetching data from the backend Web API over HTTP and providing it to components.
+          </dd>
+
+          <dt><code>*.spec.ts</code> — The Automated Safety Net</dt>
+          <dd>
+            Unit and integration test files (e.g. <code>book-list.component.spec.ts</code>). Tests verify that components render properly and that search filtering works without manually clicking in a browser.
+          </dd>
+
+          <dt><code>app.routes.ts</code> — The Traffic Director</dt>
+          <dd>
+            The URL router map. It specifies which component to display when the user visits a specific URL (for example: <code>/books</code> displays <code>BookListComponent</code>).
+          </dd>
+
+          <dt><code>app.config.ts</code> — The Application Blueprint</dt>
+          <dd>
+            Configures global settings when Angular boots up, such as registering the HTTP client provider and router.
+          </dd>
+
+          <dt><code>models.ts</code> — The Data Shape Definitions</dt>
+          <dd>
+            Defines TypeScript interfaces (e.g. <code>interface Book</code>) describing what properties a book possesses (id, title, author, description).
+          </dd>
+        </dl>
+      </section>
+
+      <section>
+        <h2>The 3 Pillars Inside Every Component</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem; font-family: var(--font-sans); font-size: 0.92rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+              <th style="padding: 0.6rem;">Pillar</th>
+              <th style="padding: 0.6rem;">Role</th>
+              <th style="padding: 0.6rem;">In <code>book-list.component.ts</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.6rem;"><strong>Template</strong></td>
+              <td style="padding: 0.6rem;">HTML layout &amp; elements</td>
+              <td style="padding: 0.6rem;">Card grid, search input, empty state</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.6rem;"><strong>Logic</strong></td>
+              <td style="padding: 0.6rem;">TypeScript class &amp; state</td>
+              <td style="padding: 0.6rem;"><code>searchTerm = signal('')</code>, <code>loadBooks()</code></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding: 0.6rem;"><strong>Metadata</strong></td>
+              <td style="padding: 0.6rem;"><code>@Component</code> decorator</td>
+              <td style="padding: 0.6rem;"><code>selector: 'app-book-list'</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <footer>
+      <p>Part of the Book Catalog learning workspace. Grounded in <a href="../MISSION.md">MISSION.md</a>.</p>
+      <div class="nav-links">
+        <span><a href="../lessons/0001-the-big-picture-how-the-web-works.html">← Lesson 0001</a></span>
+        <span><a href="../lessons/0002-understanding-angular-and-its-files.html">Lesson 0002 →</a></span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

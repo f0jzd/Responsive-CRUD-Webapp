@@ -29,8 +29,8 @@ En fullstack och fullt responsiv webbapplikation med en delad bokkatalog och per
 
 ### 1. Starta backend API (.NET 9)
 ```powershell
-dotnet restore .\backend\Quotes.Api\Quotes.Api.csproj
-dotnet run --project .\backend\Quotes.Api\Quotes.Api.csproj --urls "http://localhost:5168"
+dotnet restore .\backend\Catalog.Api\Catalog.Api.csproj
+dotnet run --project .\backend\Catalog.Api\Catalog.Api.csproj --urls "http://localhost:5168"
 ```
 
 ### 2. Starta frontend (Angular 20)

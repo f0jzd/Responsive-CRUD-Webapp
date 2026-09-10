@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Quotes.Api;
-
-namespace Quotes.Api.Tests;
+using Catalog.Api;
+ 
+namespace Catalog.Api.Tests;
 
 /// <summary>
 /// Custom WebApplicationFactory that replaces the production SQLite database

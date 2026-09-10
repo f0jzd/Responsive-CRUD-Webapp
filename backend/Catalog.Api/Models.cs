@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Quotes.Api;
+namespace Catalog.Api;
 
 public sealed class AppUser
 {

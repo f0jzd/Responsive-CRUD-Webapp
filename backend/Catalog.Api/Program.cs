@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Quotes.Api;
+using Catalog.Api;
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
