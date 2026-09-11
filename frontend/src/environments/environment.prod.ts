@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: "https://<your-backend-app-name>.azurewebsites.net/api"
+  apiUrl: "https://rg-bookcatalog-fwcfeybwd8aehhfv.swedencentral-01.azurewebsites.net/api"
 };
