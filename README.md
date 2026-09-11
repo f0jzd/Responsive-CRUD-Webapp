@@ -25,7 +25,7 @@ En fullstack och fullt responsiv webbapplikation med en delad bokkatalog och per
 - .NET SDK 9
 - Node.js LTS (v20+) och npm
 
-## Starta applikationen
+## Starta applikationen lokalt
 
 ### 1. Starta backend API (.NET 9)
 ```powershell
@@ -41,6 +41,14 @@ npm start
 ```
 
 Öppna webbläsaren på `http://localhost:4200`.
+
+### Alternativt Netlify
+
+Frontend delen av sidan hostas av Netlify medans backend sitter på Microsoft Azure.
+
+
+[Netlify länk](https://comforting-quokka-289fd6.netlify.app/)
+
 
 ## Tester
 Backend-tester kan köras via:
