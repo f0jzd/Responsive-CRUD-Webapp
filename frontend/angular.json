@@ -16,7 +16,8 @@
             "tsConfig": "tsconfig.app.json",
             "styles": ["src/styles.scss"],
             "assets": [
-              "src/staticwebapp.config.json"
+              "src/staticwebapp.config.json",
+              "src/_redirects"
             ]
           },
           "configurations": {
