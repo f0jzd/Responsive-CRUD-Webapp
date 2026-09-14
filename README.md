@@ -49,10 +49,17 @@ Frontend delen av sidan hostas av Netlify medans backend sitter på Microsoft Az
 
 [Netlify länk](https://comforting-quokka-289fd6.netlify.app/)
 
+### 3. Logga in
+
+Använd dessa inloggningsuppgifter för att testa funktioner.
+
+```
+Email: demo@example.com
+Password: Password123!
+```
 
 ## Tester
 Backend-tester kan köras via:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\.scratch\test_api.ps1
 ```
-
